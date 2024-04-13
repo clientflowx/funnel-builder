@@ -14,7 +14,7 @@ const SideBar: React.FC<Props> = ({ handleOptionChange }) => {
         <div>
             <aside
                 id="logo-sidebar"
-                className={`fixed top-0 left-0 z-50 h-full w-52 cursor-pointer bg-black border-r border-gray-200 transition-all overflow-x-hidden`}
+                className={`fixed h-full w-52 bg-black border-r border-gray-200 transition-all overflow-x-hidden`}
                 aria-label="Sidebar"
             >
                 <div className="h-full pb-4 overflow-y-auto bg-black">
@@ -24,7 +24,7 @@ const SideBar: React.FC<Props> = ({ handleOptionChange }) => {
                             {sideBarOptions.map((item, index) => {
                                 return (
                                     <li key={index} onClick={() => handleOptionChange(item.title)}>
-                                        <div className={`${item.key === "settings" ? 'hidden' : ''} flex text-sm items-center p-2 m-2 rounded-md leading-2 text-white opacity-70 hover:opacity-100 transition-all group`}>
+                                        <div className={`${item.key === "settings" ? 'hidden' : ''} cursor-pointer flex text-sm items-center p-2 m-2 rounded-md leading-2 text-white opacity-70 hover:opacity-100 transition-all group`}>
                                             <div className="w-5 text-white">{<item.icon size={20} />}</div>
                                             <div className={`ms-3 h-5 ${item.titleVisible ? "" : "hidden"}`}>
                                                 {item.title}
@@ -37,7 +37,7 @@ const SideBar: React.FC<Props> = ({ handleOptionChange }) => {
 
                         {/* Setting sidebar option */}
                         <div onClick={() => handleOptionChange(lastOption.title)}>
-                            <div className={`${lastOption.key === "settings" ? '' : 'hidden'} flex items-center  rounded-md leading-2 text-white opacity-70 hover:opacity-100 transition-all text-sm p-2 m-2`}>
+                            <div className={`${lastOption.key === "settings" ? '' : 'hidden'} flex items-center  rounded-md leading-2 text-white opacity-70 hover:opacity-100 transition-all text-sm p-2 m-2 mb-14 cursor-pointer`}>
                                 <div className="w-5 text-white">{<lastOption.icon size={20} />}</div>
                                 <div className={`ms-3 h-5 ${lastOption.titleVisible ? "" : "hidden"}`}>
                                     {lastOption.title}
