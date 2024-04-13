@@ -5,16 +5,17 @@ import { sideBarOptions } from './option';
 
 type Props = {
     handleOptionChange: (selectedOption: string) => void;
+    isOpen: boolean
 };
 
-const SideBar: React.FC<Props> = ({ handleOptionChange }) => {
+const SideBar: React.FC<Props> = ({ handleOptionChange, isOpen }) => {
     const lastOption = sideBarOptions[sideBarOptions.length - 1];
 
     return (
         <div>
             <aside
                 id="logo-sidebar"
-                className={`fixed h-full w-52 bg-black border-r border-gray-200 transition-all overflow-x-hidden`}
+                className={`fixed h-full ${isOpen ? 'w-52' : 'w-16'} bg-black border-r border-gray-200 transition-all overflow-x-hidden`}
                 aria-label="Sidebar"
             >
                 <div className="h-full pb-4 overflow-y-auto bg-black">
@@ -24,9 +25,9 @@ const SideBar: React.FC<Props> = ({ handleOptionChange }) => {
                             {sideBarOptions.map((item, index) => {
                                 return (
                                     <li key={index} onClick={() => handleOptionChange(item.title)}>
-                                        <div className={`${item.key === "settings" ? 'hidden' : ''} cursor-pointer flex text-sm items-center p-2 m-2 rounded-md leading-2 text-white opacity-70 hover:opacity-100 transition-all group`}>
+                                        <div className={`${item.key === "settings" ? 'hidden' : ''} cursor-pointer flex text-sm items-center ${isOpen ? '' : 'justify-center'} p-2 m-2 rounded-md leading-2 text-white opacity-70 hover:opacity-100 transition-all group`}>
                                             <div className="w-5 text-white">{<item.icon size={20} />}</div>
-                                            <div className={`ms-3 h-5 ${item.titleVisible ? "" : "hidden"}`}>
+                                            <div className={`ms-3 h-5 ${item.titleVisible ? "" : "hidden"} ${isOpen ? '' : 'hidden'}`}>
                                                 {item.title}
                                             </div>
                                         </div>
@@ -37,9 +38,9 @@ const SideBar: React.FC<Props> = ({ handleOptionChange }) => {
 
                         {/* Setting sidebar option */}
                         <div onClick={() => handleOptionChange(lastOption.title)}>
-                            <div className={`${lastOption.key === "settings" ? '' : 'hidden'} flex items-center  rounded-md leading-2 text-white opacity-70 hover:opacity-100 transition-all text-sm p-2 m-2 mb-14 cursor-pointer`}>
+                            <div className={`${lastOption.key === "settings" ? '' : 'hidden'} flex items-center  rounded-md leading-2 text-white opacity-70 ${isOpen ? '' : 'justify-center'} hover:opacity-100 transition-all text-sm p-2 m-2 mb-14 cursor-pointer`}>
                                 <div className="w-5 text-white">{<lastOption.icon size={20} />}</div>
-                                <div className={`ms-3 h-5 ${lastOption.titleVisible ? "" : "hidden"}`}>
+                                <div className={`ms-3 h-5 ${lastOption.titleVisible ? "" : "hidden"} ${isOpen ? '' : 'hidden'}`}>
                                     {lastOption.title}
                                 </div>
                             </div>
