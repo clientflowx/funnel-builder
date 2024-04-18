@@ -1,15 +1,23 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 
 import { updatePasswordFormFields, updateProfileFormFields } from './formInputFields'
 
+const initialPasswordFormData = {
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+}
+
 const ProfilePage = () => {
+    const [updatePasswordFormData, setupdatePasswordFormData] = useState(initialPasswordFormData);
     return (
         <div className='p-10 flex flex-col gap-5'>
             <div className='text-xl font-semibold'>Profile</div>
-            <div className='flex items-start justify-betweena gap-4'>
+            <div className='flex items-start justify-between gap-4'>
                 <div className='shadow-sm border w-1/2 rounded-md'>
                     <div className='p-5'>
                         <h2 className='font-bold'>Update your profile</h2>
