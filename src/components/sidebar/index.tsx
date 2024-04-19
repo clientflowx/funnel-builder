@@ -1,14 +1,13 @@
 "use client"
 import React, { useState } from 'react'
 import { sideBarOptions } from './option';
-
+import Link from 'next/link';
 
 type Props = {
-    handleOptionChange: (selectedOption: string) => void;
     isOpen: boolean
 };
 
-const SideBar: React.FC<Props> = ({ handleOptionChange, isOpen }) => {
+const SideBar: React.FC<Props> = ({ isOpen }) => {
     const lastOption = sideBarOptions[sideBarOptions.length - 1];
 
     return (
@@ -24,27 +23,27 @@ const SideBar: React.FC<Props> = ({ handleOptionChange, isOpen }) => {
                         <div>
                             {sideBarOptions.map((item, index) => {
                                 return (
-                                    <li key={index} onClick={() => handleOptionChange(item.title)}>
+                                    <Link href={item.key} key={index}>
                                         <div className={`${item.key === "settings" ? 'hidden' : ''} cursor-pointer flex text-sm items-center ${isOpen ? '' : 'justify-center'} p-2 m-2 rounded-md leading-2 text-white opacity-70 hover:opacity-100 transition-all group`}>
                                             <div className="w-5 text-white">{<item.icon size={20} />}</div>
                                             <div className={`ms-3 h-5 ${item.titleVisible ? "" : "hidden"} ${isOpen ? '' : 'hidden'}`}>
                                                 {item.title}
                                             </div>
                                         </div>
-                                    </li>
+                                    </Link>
                                 );
                             })}
                         </div>
 
                         {/* Setting sidebar option */}
-                        <div onClick={() => handleOptionChange(lastOption.title)}>
+                        <Link href={lastOption.key}>
                             <div className={`${lastOption.key === "settings" ? '' : 'hidden'} flex items-center  rounded-md leading-2 text-white opacity-70 ${isOpen ? '' : 'justify-center'} hover:opacity-100 transition-all text-sm p-2 m-2 mb-14 cursor-pointer`}>
                                 <div className="w-5 text-white">{<lastOption.icon size={20} />}</div>
                                 <div className={`ms-3 h-5 ${lastOption.titleVisible ? "" : "hidden"} ${isOpen ? '' : 'hidden'}`}>
                                     {lastOption.title}
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     </ul>
                 </div>
             </aside>
