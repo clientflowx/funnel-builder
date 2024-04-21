@@ -1,8 +1,10 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+import { useUser } from '@clerk/nextjs'
+import { formField } from './types'
 
 import { updatePasswordFormFields, updateProfileFormFields } from './formInputFields'
 
@@ -11,9 +13,36 @@ const initialPasswordFormData = {
     newPassword: "",
     confirmPassword: ""
 }
+const initialUserFormData = {
+    firstName: "",
+    lastName: "",
+    email: "",
+}
 
 const ProfilePage = () => {
+    const { user, isLoaded } = useUser();
     const [updatePasswordFormData, setupdatePasswordFormData] = useState(initialPasswordFormData);
+    const [updateForm, setUpdateForm] = useState(initialUserFormData);
+    console.log(updateForm);
+    
+
+    useEffect(() => {
+        if (isLoaded && user) {
+            setUpdateForm({
+                firstName: user.firstName || "",
+                lastName: user.lastName || "",
+                email: user.primaryEmailAddress?.emailAddress || "",
+            });
+        }
+    }, [isLoaded, user]);
+
+    const handleUpdateProfileFormChange = (e: any, field: formField) => {
+        setUpdateForm(prevState => ({
+            ...prevState,
+            [field.value]: e.target.value
+        }));
+    };
+
     return (
         <div className='p-10 flex flex-col gap-5'>
             <div className='text-xl font-semibold'>Profile</div>
@@ -31,7 +60,12 @@ const ProfilePage = () => {
                                 updateProfileFormFields.map((field, index) => (
                                     <div key={index} className="grid w-full items-center gap-1.5">
                                         <Label htmlFor=''>{field.label}</Label>
-                                        <Input id="" className='w-full' type={field.type} />
+                                        <Input
+                                            className='w-full'
+                                            type={field.type}
+                                            value={updateForm[field.value as keyof typeof updateForm]}
+                                            onChange={(e) => handleUpdateProfileFormChange(e, field)}
+                                        />
                                     </div>
                                 ))
                             }

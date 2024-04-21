@@ -1,4 +1,5 @@
 type formField = {
+    value:string
     label: string,
     type: string
 }

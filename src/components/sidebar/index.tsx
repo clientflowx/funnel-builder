@@ -23,7 +23,7 @@ const SideBar: React.FC<Props> = ({ isOpen }) => {
                         <div>
                             {sideBarOptions.map((item, index) => {
                                 return (
-                                    <Link href={item.key} key={index}>
+                                    <Link href={`/home/${item.key}`} key={index}>
                                         <div className={`${item.key === "settings" ? 'hidden' : ''} cursor-pointer flex text-sm items-center ${isOpen ? '' : 'justify-center'} p-2 m-2 rounded-md leading-2 text-white opacity-70 hover:opacity-100 transition-all group`}>
                                             <div className="w-5 text-white">{<item.icon size={20} />}</div>
                                             <div className={`ms-3 h-5 ${item.titleVisible ? "" : "hidden"} ${isOpen ? '' : 'hidden'}`}>
@@ -36,7 +36,7 @@ const SideBar: React.FC<Props> = ({ isOpen }) => {
                         </div>
 
                         {/* Setting sidebar option */}
-                        <Link href={lastOption.key}>
+                        <Link href={`/home/${lastOption.key}`}>
                             <div className={`${lastOption.key === "settings" ? '' : 'hidden'} flex items-center  rounded-md leading-2 text-white opacity-70 ${isOpen ? '' : 'justify-center'} hover:opacity-100 transition-all text-sm p-2 m-2 mb-14 cursor-pointer`}>
                                 <div className="w-5 text-white">{<lastOption.icon size={20} />}</div>
                                 <div className={`ms-3 h-5 ${lastOption.titleVisible ? "" : "hidden"} ${isOpen ? '' : 'hidden'}`}>
