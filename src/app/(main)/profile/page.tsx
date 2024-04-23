@@ -5,6 +5,8 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { useUser } from '@clerk/nextjs'
 import { formField } from './types'
+import Image from 'next/image'
+import { Skeleton } from "@/components/ui/skeleton"
 
 import { updatePasswordFormFields, updateProfileFormFields } from './formInputFields'
 
@@ -17,6 +19,7 @@ const initialUserFormData = {
     firstName: "",
     lastName: "",
     email: "",
+    image: ""
 }
 
 const ProfilePage = () => {
@@ -24,7 +27,7 @@ const ProfilePage = () => {
     const [updatePasswordFormData, setupdatePasswordFormData] = useState(initialPasswordFormData);
     const [updateForm, setUpdateForm] = useState(initialUserFormData);
     console.log(updateForm);
-    
+
 
     useEffect(() => {
         if (isLoaded && user) {
@@ -32,6 +35,7 @@ const ProfilePage = () => {
                 firstName: user.firstName || "",
                 lastName: user.lastName || "",
                 email: user.primaryEmailAddress?.emailAddress || "",
+                image: user.imageUrl || "",
             });
         }
     }, [isLoaded, user]);
@@ -55,24 +59,37 @@ const ProfilePage = () => {
                     <hr />
                     {/* Profile Update form */}
                     <div className='p-5'>
-                        <form action="" className='flex flex-col gap-5 items-start justify-between'>
-                            {
-                                updateProfileFormFields.map((field, index) => (
-                                    <div key={index} className="grid w-full items-center gap-1.5">
-                                        <Label htmlFor=''>{field.label}</Label>
-                                        <Input
-                                            className='w-full'
-                                            type={field.type}
-                                            value={updateForm[field.value as keyof typeof updateForm]}
-                                            onChange={(e) => handleUpdateProfileFormChange(e, field)}
-                                        />
-                                    </div>
-                                ))
-                            }
-                            <div>
-                                <Button className='bg-black hover:bg-gray-800 transition-all'>Update profile</Button>
+                        {!isLoaded ?
+                            // loading skeleton
+                            <div className="flex flex-col space-y-3">
+                                <Skeleton className="h-[125px] w-full rounded-xl" />
+                                <div className="space-y-2">
+                                    <Skeleton className="h-4 w-[250px]" />
+                                    <Skeleton className="h-4 w-[200px]" />
+                                </div>
                             </div>
-                        </form>
+                            :
+                            <form action="" className='flex flex-col gap-5 items-start justify-between'>
+                                {updateForm.image && (
+                                    <Image src={updateForm.image} alt='user-image' width={100} height={100} className='rounded-full' />
+                                )}
+                                {
+                                    updateProfileFormFields.map((field, index) => (
+                                        <div key={index} className="grid w-full items-center gap-1.5">
+                                            <Label htmlFor=''>{field.label}</Label>
+                                            <Input
+                                                className='w-full'
+                                                type={field.type}
+                                                value={updateForm[field.value as keyof typeof updateForm]}
+                                                onChange={(e) => handleUpdateProfileFormChange(e, field)}
+                                            />
+                                        </div>
+                                    ))
+                                }
+                                <div>
+                                    <Button className='bg-black hover:bg-gray-800 transition-all'>Update profile</Button>
+                                </div>
+                            </form>}
                     </div>
                 </div>
 
