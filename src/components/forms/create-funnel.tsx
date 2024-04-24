@@ -32,7 +32,7 @@ const CreateFunnel = () => {
   return (
     <Card className="flex-1">
       <CardHeader>
-        <CardTitle>Funnel Details</CardTitle>
+        <CardTitle>From blank</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -49,24 +49,9 @@ const CreateFunnel = () => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Funnel Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Tell us a little bit more about this funnel."
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
 
             <Button className="w-20 mt-4" type="submit">
-              {form.formState.isSubmitting ? "Loading" : "Save"}
+              {form.formState.isSubmitting ? "Loading" : "Create"}
             </Button>
           </form>
         </Form>
