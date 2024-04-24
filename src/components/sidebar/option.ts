@@ -1,5 +1,11 @@
 import { SidebarOption } from "./types";
-import { LayoutDashboard, PanelsTopLeft, Filter, Settings, Package } from 'lucide-react';
+import {
+  LayoutDashboard,
+  PanelsTopLeft,
+  Filter,
+  Settings,
+  Package,
+} from "lucide-react";
 export const sideBarOptions: SidebarOption[] = [
   {
     key: "dashboard",
@@ -20,8 +26,8 @@ export const sideBarOptions: SidebarOption[] = [
     titleVisible: true,
   },
   {
-    key: "funnel",
-    title: "Funnel",
+    key: "funnels",
+    title: "Funnels",
     icon: Filter,
     titleVisible: true,
   },

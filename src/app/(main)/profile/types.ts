@@ -1,7 +1,7 @@
 type formField = {
-    label: string,
-    type: string
-}
-
+  value: string;
+  label: string;
+  type: string;
+};
 
 export type { formField };
