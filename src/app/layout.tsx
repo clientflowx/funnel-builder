@@ -10,23 +10,21 @@ import { ModalProvider } from "@/providers/modal-provider";
 const inter = Inter({ subsets: ["latin"] });
 import { dark } from "@clerk/themes";
 import shouldShowSidebarAndNavbar from "@/lib/helper"; // function to show navbar and sidebar conditionally
+import { SidebarProvider } from "@/providers/sidebar-provider";
 
 /*
 Provider Documentation:
 ClerkProvider:- For Clerk Auth
 ThemeProvider:- By ShadCn for dark mode
 ModalProver:- For modal functionality
+SidebarProvider:- For closing, opeing and toggling sidebar from anywhere in app.
 */
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const showSidebarAndNavbar = shouldShowSidebarAndNavbar();
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
   return (
     <ClerkProvider appearance={{ baseTheme: dark }}>
       <html lang="en">
@@ -37,24 +35,19 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <ModalProvider>
-              {showSidebarAndNavbar && (
-                <>
-                  <Navbar toggleSidebar={toggleSidebar} />
-                  <div className="pt-14">
-                    <SideBar isOpen={isSidebarOpen} />
-                  </div>
-                </>
-              )}
-              <div
-                className={`${showSidebarAndNavbar ? "w-full pl-56 pt-4" : ""}`}
-              >
-                {children}
-              </div>
-            </ModalProvider>
+            <SidebarProvider>
+              <ModalProvider>
+                <div
+                  className={`${
+                    showSidebarAndNavbar ? "w-full pl-[80px] pt-4" : ""
+                  }`}
+                >
+                  {children}
+                </div>
+              </ModalProvider>
+            </SidebarProvider>
           </ThemeProvider>
         </body>
-        <body className={inter.className}></body>
       </html>
     </ClerkProvider>
   );

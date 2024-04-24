@@ -1,3 +1,4 @@
+import { useSidebar } from "@/providers/sidebar-provider";
 import { sideBarOptions } from "./option";
 import Link from "next/link";
 
@@ -6,15 +7,16 @@ type Props = {
 };
 
 const SideBar: React.FC<Props> = ({ isOpen }) => {
+  const { setClose } = useSidebar();
   const lastOption = sideBarOptions[sideBarOptions.length - 1];
 
   return (
     <div>
       <aside
         id="logo-sidebar"
-        className={`fixed h-full ${
+        className={`fixed z-50 h-full ${
           isOpen ? "w-52" : "w-16"
-        } bg-black border-r border-gray-200 transition-all overflow-x-hidden`}
+        } bg-black transition-all overflow-x-hidden`}
         aria-label="Sidebar"
       >
         <div className="h-full pb-4 overflow-y-auto bg-black">
@@ -23,13 +25,15 @@ const SideBar: React.FC<Props> = ({ isOpen }) => {
             <div>
               {sideBarOptions.map((item, index) => {
                 return (
-                  <Link href={`${item.key}`} key={index}>
+                  <Link
+                    href={`${item.key}`}
+                    key={index}
+                    onClick={() => setClose()}
+                  >
                     <div
                       className={`${
                         item.key === "settings" ? "hidden" : ""
-                      } cursor-pointer flex text-sm items-center ${
-                        isOpen ? "" : "justify-center"
-                      } p-2 m-2 rounded-md leading-2 text-white opacity-70 hover:opacity-100 transition-all group`}
+                      } cursor-pointer flex text-sm items-center p-2 m-2 rounded-md leading-2 text-white opacity-70 hover:opacity-100 transition-all group`}
                     >
                       <div className="w-5 text-white">
                         {<item.icon size={20} />}
@@ -48,7 +52,7 @@ const SideBar: React.FC<Props> = ({ isOpen }) => {
             </div>
 
             {/* Setting sidebar option */}
-            <Link href={`/${lastOption.key}`}>
+            <Link href={`/${lastOption.key}`} onClick={() => setClose()}>
               <div
                 className={`${
                   lastOption.key === "settings" ? "" : "hidden"
