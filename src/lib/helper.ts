@@ -1,15 +1,17 @@
 import { usePathname } from "next/navigation";
 
 const shouldShowSidebarAndNavbar = () => {
+  const allowedPaths = [
+    "/",
+    "/sites",
+    "/products",
+    "/funnels",
+    "/dashboard",
+    "/settings",
+    "/profile",
+  ];
   const pathname = usePathname();
-  return (
-    pathname === "/" ||
-    pathname === "/sites" ||
-    pathname === "/products" ||
-    pathname === "/funnels" ||
-    pathname === "/dashboard" ||
-    pathname === "/settings"
-  );
+  return allowedPaths.includes(pathname);
 };
 
 export default shouldShowSidebarAndNavbar;
