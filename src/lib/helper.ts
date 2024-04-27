@@ -5,13 +5,19 @@ const shouldShowSidebarAndNavbar = () => {
     "/",
     "/sites",
     "/products",
-    "/funnels",
+    "/funnels", // Include the base funnels path
     "/dashboard",
     "/settings",
     "/profile",
   ];
+
   const pathname = usePathname();
-  return allowedPaths.includes(pathname);
+
+  const isAllowedPath = allowedPaths.some((path) => {
+    return pathname.startsWith(path);
+  });
+
+  return isAllowedPath;
 };
 
 export default shouldShowSidebarAndNavbar;

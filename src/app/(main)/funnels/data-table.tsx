@@ -21,6 +21,7 @@ import { Search } from "lucide-react";
 import React from "react";
 import { FunnelListingColumn } from "./columns";
 import { FunnelData } from "./page";
+import Link from "next/link";
 
 interface Props {
   actionButtonText: React.ReactNode;
@@ -117,10 +118,12 @@ const FunnelsTable: React.FC<Props> = ({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      <Link key={cell.id} href={`/funnels/${row.id}/steps`}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Link>
                     </TableCell>
                   ))}
                 </TableRow>

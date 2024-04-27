@@ -1,5 +1,4 @@
 "use client";
-
 import Navbar from "@/components/navbar";
 import SideBar from "@/components/sidebar";
 import shouldShowSidebarAndNavbar from "@/lib/helper";
@@ -14,6 +13,7 @@ export type SidebarContextType = {
   toggleSidebar: () => void;
   isOpen: boolean;
 };
+
 const SidebarContext = createContext<SidebarContextType>({
   setOpen: () => {},
   setClose: () => {},
@@ -53,7 +53,7 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({
       )}
       {children}
     </SidebarContext.Provider>
-  );
+  ); 
 };
 
 export const useSidebar = () => {
