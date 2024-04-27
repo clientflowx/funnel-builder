@@ -27,7 +27,7 @@ const SideBar: React.FC<Props> = ({ isOpen }) => {
                 return (
                   <Link
                     href={`/${item.key}`}
-                    key={index}
+                    key={item.key}
                     onClick={() => setClose()}
                   >
                     <div

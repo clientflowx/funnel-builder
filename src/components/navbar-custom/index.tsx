@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 type Props = {
-  options: { value: string; header: string }[];
+  options: { id: string; value: string; header: string }[];
   setSelectedOption: React.Dispatch<React.SetStateAction<string>>;
 };
 
@@ -22,15 +22,15 @@ const Navbar: React.FC<Props> = ({ options, setSelectedOption }) => {
     setSelectedOption(option);
   };
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full border-b">
       <div className="flex items-center justify-start gap-3">
-        {options.map((option, index) => (
-          <div className="flex flex-col" key={index}>
+        {options.map((option) => (
+          <div className="flex flex-col" key={option.id}>
             <div
               className={`text-xs font-medium cursor-pointer ${
                 option.value === userSelectedOption ? "text-blue-500" : ""
               } transition-all`}
-              key={index}
+              key={option.id}
               onClick={() => handleOptionClick(option.value)}
             >
               {option.header}
@@ -43,7 +43,6 @@ const Navbar: React.FC<Props> = ({ options, setSelectedOption }) => {
           </div>
         ))}
       </div>
-      <hr />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { formField } from "./types";
+import { formField } from "@/./types/formField";
 
 const settingsFormFields: formField[] = [
   {

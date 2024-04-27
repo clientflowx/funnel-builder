@@ -15,8 +15,8 @@ const Settings = () => {
   return (
     <div className="flex w-full gap-4 text-sm">
       <div className="w-full flex flex-col gap-3">
-        {settingsFieldsColumn1.map((field, index) => (
-          <div key={index} className="grid w-full items-center gap-2">
+        {settingsFieldsColumn1.map((field) => (
+          <div key={field.value} className="grid w-full items-center gap-2">
             <Label htmlFor="">{field.label}</Label>
             <Input
               className="w-full"
@@ -28,8 +28,8 @@ const Settings = () => {
         ))}
       </div>
       <div className="w-full flex flex-col gap-3">
-        {settingsFieldsColumn2.map((field, index) => (
-          <div key={index} className="grid w-full items-center gap-2">
+        {settingsFieldsColumn2.map((field) => (
+          <div key={field.value} className="grid w-full items-center gap-2">
             <Label htmlFor="">{field.label}</Label>
             <Input
               className="w-full"

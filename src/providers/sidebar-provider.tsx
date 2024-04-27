@@ -53,7 +53,7 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({
       )}
       {children}
     </SidebarContext.Provider>
-  ); 
+  );
 };
 
 export const useSidebar = () => {
