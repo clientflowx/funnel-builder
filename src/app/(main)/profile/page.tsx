@@ -92,8 +92,8 @@ const ProfilePage = () => {
                     className="rounded-full"
                   />
                 )}
-                {updateProfileFormFields.map((field, index) => (
-                  <div key={index} className="grid w-full items-center gap-1.5">
+                {updateProfileFormFields.map((field) => (
+                  <div key={field.value} className="grid w-full items-center gap-1.5">
                     <Label htmlFor="">{field.label}</Label>
                     <Input
                       className="w-full"
@@ -129,8 +129,8 @@ const ProfilePage = () => {
               action=""
               className="flex flex-col gap-5 items-start justify-between"
             >
-              {updatePasswordFormFields.map((field, index) => (
-                <div key={index} className="grid w-full items-center gap-1.5">
+              {updatePasswordFormFields.map((field) => (
+                <div key={field.value} className="grid w-full items-center gap-1.5">
                   <Label htmlFor="">{field.label}</Label>
                   <Input id="" className="w-full" type={field.type} />
                 </div>
