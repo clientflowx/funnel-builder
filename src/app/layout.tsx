@@ -11,6 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 import { dark } from "@clerk/themes";
 import shouldShowSidebarAndNavbar from "@/lib/helper"; // function to show navbar and sidebar conditionally
 import { SidebarProvider } from "@/providers/sidebar-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 /*
 Provider Documentation:
@@ -44,6 +45,7 @@ export default function RootLayout({
                 >
                   {children}
                 </div>
+                <Toaster />
               </ModalProvider>
             </SidebarProvider>
           </ThemeProvider>
