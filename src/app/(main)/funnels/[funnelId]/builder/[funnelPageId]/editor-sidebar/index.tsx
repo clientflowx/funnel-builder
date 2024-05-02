@@ -46,7 +46,7 @@ const EditorSidebar = (props: Props) => {
                 <SheetTitle>Styles</SheetTitle>
                 <SheetDescription>
                   Show your creativity! You can customize every component as you
-                  like.
+                  like
                 </SheetDescription>
               </SheetHeader>
               <SettingsTab />
