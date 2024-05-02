@@ -1,23 +1,13 @@
+"use client";
 import { usePathname } from "next/navigation";
 
 const shouldShowSidebarAndNavbar = () => {
-  const allowedPaths = [
-    "/",
-    "/sites",
-    "/products",
-    "/funnels", // Include the base funnels path
-    "/dashboard",
-    "/settings",
-    "/profile",
-  ];
+  const excludedPaths = [/^\/funnels(?![/]\d+\/builder\/[a-f0-9\-]{36}$)/];
 
   const pathname = usePathname();
-
-  const isAllowedPath = allowedPaths.some((path) => {
-    return pathname.startsWith(path);
+  return excludedPaths.some((path) => {
+    return path.test(pathname);
   });
-
-  return isAllowedPath;
 };
 
 export default shouldShowSidebarAndNavbar;

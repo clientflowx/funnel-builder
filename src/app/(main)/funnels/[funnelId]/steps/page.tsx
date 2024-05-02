@@ -11,7 +11,6 @@ import React, { useId, useState } from "react";
 
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import Link from "next/link";
-// import FunnelPagePlaceholder from "@/components/icons/funnel-page-placeholder";
 
 import {
   Card,
@@ -23,6 +22,7 @@ import { Funnel, FunnelPage } from "@/types/funnel";
 import CreateFunnelPage from "@/components/forms/funnel-page";
 import FunnelStepCard from "./funnel-step-card";
 import { v4 } from "uuid";
+import FunnelPagePlaceholder from "@/components/funnel-page-placeholder";
 
 // Test Data
 const funnel: Funnel = {
@@ -30,7 +30,7 @@ const funnel: Funnel = {
 };
 const pages: FunnelPage[] = [
   {
-    id: v4(),
+    id: "963de249-ad95-4db3-a222-313052a52195",
     name: "Funnel Test Page",
     pathName: "/funnelpage1",
     order: 0,
@@ -50,7 +50,7 @@ const pages: FunnelPage[] = [
 ];
 
 const FunnelSteps = () => {
-  const funnelId = useId();
+  const funnelId = "0";
   const { toast } = useToast();
   const [clickedPage, setClickedPage] = useState<FunnelPage | undefined>(
     pages[0]
@@ -172,12 +172,12 @@ const FunnelSteps = () => {
                 <CardDescription className="flex flex-col gap-4">
                   <div className="border-2 rounded-lg sm:w-80 w-full  overflow-clip">
                     <Link
-                      href={`/funnels/${funnelId}/editor/${clickedPage?.id}`}
+                      href={`/funnels/${funnelId}/builder/${clickedPage?.id}`}
                       className="relative group"
                     >
                       <div className="cursor-pointer group-hover:opacity-30 w-full">
                         {/* Todo: div inside p, hydration error */}
-                        {/* <FunnelPagePlaceholder /> */}
+                        <FunnelPagePlaceholder />
                       </div>
                       <LucideEdit
                         size={50}
