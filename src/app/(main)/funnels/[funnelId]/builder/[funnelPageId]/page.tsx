@@ -3,6 +3,7 @@ import { FunnelPage } from "@/types/funnel";
 import React from "react";
 import { v4 } from "uuid";
 import EditorNavigation from "./editor-navigation";
+import EditorSidebar from "./editor-sidebar";
 
 type Props = {
   params: { funnelPageId: string };
@@ -20,6 +21,7 @@ const Page = ({ params }: Props) => {
     <div className="fixed top-0 bottom-0 left-0 right-0 z-[20] bg-background overflow-hidden">
       <EditorProvider funnelId={funnelId} pageDetails={page}>
         <EditorNavigation funnelId={funnelId} pageDetails={page} />
+        <EditorSidebar />
       </EditorProvider>
     </div>
   );

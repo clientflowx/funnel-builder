@@ -21,6 +21,12 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/(main)/funnels/[funnelId]/builder/[funnelPageId]/editor-sidebar/tabs/components-tab"
+  ],
   "exclude": ["node_modules"]
 }
