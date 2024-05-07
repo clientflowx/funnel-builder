@@ -11,7 +11,11 @@ export type EditorElement = {
   name: string;
   styles: React.CSSProperties;
   type: EditorBtns;
-  content: EditorElement[] | {};
+  content:
+    | EditorElement[]
+    | {
+        href?: string;
+      };
 };
 
 export type Editor = {
