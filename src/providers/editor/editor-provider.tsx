@@ -15,6 +15,7 @@ export type EditorElement = {
     | EditorElement[]
     | {
         href?: string;
+        innerText?: string;
       };
 };
 

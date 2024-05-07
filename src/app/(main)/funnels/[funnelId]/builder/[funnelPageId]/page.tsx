@@ -4,6 +4,7 @@ import React from "react";
 import { v4 } from "uuid";
 import EditorNavigation from "./editor-navigation";
 import EditorSidebar from "./editor-sidebar";
+import WebsiteEditor from "./website-editor";
 
 type Props = {
   params: { funnelPageId: string };
@@ -21,6 +22,9 @@ const Page = ({ params }: Props) => {
     <div className="fixed top-0 bottom-0 left-0 right-0 z-[20] bg-background overflow-hidden">
       <EditorProvider funnelId={funnelId} pageDetails={page}>
         <EditorNavigation funnelId={funnelId} pageDetails={page} />
+        <div className="h-full flex justify-center">
+          <WebsiteEditor funnelPageId={params.funnelPageId} />
+        </div>
         <EditorSidebar />
       </EditorProvider>
     </div>
