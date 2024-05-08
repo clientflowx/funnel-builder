@@ -1,7 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 
-const shouldShowSidebarAndNavbar = () => {
+const useShouldShowSidebarAndNavbar = () => {
   const excludedPaths = [/^\/funnels(?![/]\d+\/builder\/[a-f0-9\-]{36}$)/];
 
   const pathname = usePathname();
@@ -10,4 +10,4 @@ const shouldShowSidebarAndNavbar = () => {
   });
 };
 
-export default shouldShowSidebarAndNavbar;
+export default useShouldShowSidebarAndNavbar;

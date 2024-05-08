@@ -9,9 +9,10 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { ModalProvider } from "@/providers/modal-provider";
 const inter = Inter({ subsets: ["latin"] });
 import { dark } from "@clerk/themes";
-import shouldShowSidebarAndNavbar from "@/lib/helper"; // function to show navbar and sidebar conditionally
+
 import { SidebarProvider } from "@/providers/sidebar-provider";
 import { Toaster } from "@/components/ui/toaster";
+import useShouldShowSidebarAndNavbar from "@/lib/helper";
 
 /*
 Provider Documentation:
@@ -24,7 +25,7 @@ SidebarProvider:- For closing, opeing and toggling sidebar from anywhere in app.
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const showSidebarAndNavbar = shouldShowSidebarAndNavbar();
+  const showSidebarAndNavbar = useShouldShowSidebarAndNavbar();
 
   return (
     <ClerkProvider appearance={{ baseTheme: dark }}>

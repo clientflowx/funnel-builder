@@ -1,7 +1,8 @@
 "use client";
 import Navbar from "@/components/navbar";
 import SideBar from "@/components/sidebar";
-import shouldShowSidebarAndNavbar from "@/lib/helper";
+import useShouldShowSidebarAndNavbar from "@/lib/helper";
+
 import React, { createContext, useContext, useState } from "react";
 
 interface SidebarProviderProps {
@@ -24,7 +25,7 @@ const SidebarContext = createContext<SidebarContextType>({
 export const SidebarProvider: React.FC<SidebarProviderProps> = ({
   children,
 }) => {
-  const showSidebarAndNavbar = shouldShowSidebarAndNavbar();
+  const showSidebarAndNavbar = useShouldShowSidebarAndNavbar();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
