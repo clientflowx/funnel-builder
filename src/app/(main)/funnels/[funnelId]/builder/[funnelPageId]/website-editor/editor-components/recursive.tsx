@@ -6,9 +6,9 @@ type Props = { element: EditorElement };
 
 const Recursive = ({ element }: Props) => {
   switch (element.type) {
-    case "text":
-      return <TextComponent element={element} />;
+    // case "text":
     default:
+      return <TextComponent element={element} />;
       return null;
   }
 };
