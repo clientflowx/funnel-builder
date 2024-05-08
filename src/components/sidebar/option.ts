@@ -1,4 +1,3 @@
-import { SidebarOption } from "./types";
 import {
   LayoutDashboard,
   PanelsTopLeft,
@@ -6,6 +5,7 @@ import {
   Settings,
   Package,
 } from "lucide-react";
+import { SidebarOption } from "./types";
 export const sideBarOptions: SidebarOption[] = [
   {
     key: "dashboard",

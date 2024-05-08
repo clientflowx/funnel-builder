@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
-import { formField } from "./types";
+
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -12,6 +12,7 @@ import {
   updatePasswordFormFields,
   updateProfileFormFields,
 } from "./formInputFields";
+import { formField } from "@/types/formField";
 
 const initialPasswordFormData = {
   currentPassword: "",
@@ -93,7 +94,10 @@ const ProfilePage = () => {
                   />
                 )}
                 {updateProfileFormFields.map((field) => (
-                  <div key={field.value} className="grid w-full items-center gap-1.5">
+                  <div
+                    key={field.value}
+                    className="grid w-full items-center gap-1.5"
+                  >
                     <Label htmlFor="">{field.label}</Label>
                     <Input
                       className="w-full"
@@ -130,7 +134,10 @@ const ProfilePage = () => {
               className="flex flex-col gap-5 items-start justify-between"
             >
               {updatePasswordFormFields.map((field) => (
-                <div key={field.value} className="grid w-full items-center gap-1.5">
+                <div
+                  key={field.value}
+                  className="grid w-full items-center gap-1.5"
+                >
                   <Label htmlFor="">{field.label}</Label>
                   <Input id="" className="w-full" type={field.type} />
                 </div>
