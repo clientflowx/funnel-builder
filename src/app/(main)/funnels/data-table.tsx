@@ -118,7 +118,11 @@ const FunnelsTable: React.FC<Props> = ({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      <Link key={cell.id} href={`/funnels/${row.id}/steps`}>
+                      <Link
+                        key={cell.id}
+                        href={`/funnels/${row.id}/steps`}
+                        className="w-full block"
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
