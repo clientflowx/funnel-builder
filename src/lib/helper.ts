@@ -2,10 +2,13 @@
 import { usePathname } from "next/navigation";
 
 const useShouldShowSidebarAndNavbar = () => {
-  const excludedPaths = [/^\/funnels\/[^\/]+\/builder\/[^\/]+$/];
+  const excludedPaths = [
+    /^\/funnels\/[^\/]+\/builder\/[^\/]+$/,
+    /^\/auth(?:\/.*)?(?:\?.*)?$/,
+  ];
 
   const pathname = usePathname();
-  return excludedPaths.some((path) => {
+  return excludedPaths.every((path) => {
     return !path.test(pathname);
   });
 };
