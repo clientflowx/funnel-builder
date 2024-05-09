@@ -20,7 +20,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Funnel, FunnelPage } from "@/types/funnel";
-import CreateFunnelPage from "@/components/forms/funnel-page";
+import CreateFunnelPage from "@/components/forms/funnels/funnel-page";
 import FunnelStepCard from "./funnel-step-card";
 import { v4 } from "uuid";
 

@@ -3,7 +3,7 @@ import FunnelsTable from "./data-table";
 import { Plus } from "lucide-react";
 import { columns } from "./columns";
 import BlurPage from "@/components/global/blur-page";
-import CreateFunnel from "@/components/forms/create-funnel";
+import CreateFunnel from "@/components/forms/funnels/create-funnel";
 
 export type FunnelData = {
   name: string;

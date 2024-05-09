@@ -13,13 +13,13 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
+import { Input } from "../../ui/input";
+import { Textarea } from "../../ui/textarea";
 
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
 // import { v4 } from "uuid";
-import { toast } from "../ui/use-toast";
+import { toast } from "../../ui/use-toast";
 import { useModal } from "@/providers/modal-provider";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
