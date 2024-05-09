@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import FunnelsTable from "./data-table";
 import { Plus } from "lucide-react";
 import { columns } from "./columns";
@@ -11,29 +12,31 @@ export type FunnelData = {
   published: string;
 };
 
-const Funnels = async ({ params }: { params: { subaccountId: string } }) => {
-  const funnels: FunnelData[] = [
-    {
-      name: "Caching Kit",
-      updatedAt: "Today",
-      published: "Live",
-    },
-    {
-      name: "Coaching Kit",
-      updatedAt: "Today",
-      published: "Live",
-    },
-    {
-      name: "SaaS Kit",
-      updatedAt: "Today",
-      published: "Live",
-    },
-    {
-      name: "PaaS Kit",
-      updatedAt: "Today",
-      published: "Draft",
-    },
-  ];
+const funnels: FunnelData[] = [
+  {
+    name: "Caching Kit",
+    updatedAt: "Today",
+    published: "Live",
+  },
+  {
+    name: "Coaching Kit",
+    updatedAt: "Today",
+    published: "Live",
+  },
+  {
+    name: "SaaS Kit",
+    updatedAt: "Today",
+    published: "Live",
+  },
+  {
+    name: "PaaS Kit",
+    updatedAt: "Today",
+    published: "Draft",
+  },
+];
+
+const Funnels = ({ params }: { params: { subaccountId: string } }) => {
+  const [funnelList, setFunnelList] = useState(funnels);
 
   return (
     <BlurPage>
@@ -44,10 +47,12 @@ const Funnels = async ({ params }: { params: { subaccountId: string } }) => {
             New Funnel
           </>
         }
-        modalChildren={<CreateFunnel />}
+        modalChildren={
+          <CreateFunnel funnelList={funnelList} setFunnelList={setFunnelList} />
+        }
         filterValue="name"
         columns={columns}
-        data={funnels}
+        data={funnelList}
       />
     </BlurPage>
   );

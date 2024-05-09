@@ -1,33 +1,61 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { SetStateAction, useEffect } from "react";
 import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 
 import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
 
 import { Button } from "../ui/button";
 
 // import { v4 } from "uuid";
-import { toast } from "../ui/use-toast";
+import { toast, useToast } from "../ui/use-toast";
 import { useModal } from "@/providers/modal-provider";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FunnelData } from "@/app/(main)/funnels/page";
 
 //CHALLENGE: Use favicons
 
-const CreateFunnel = () => {
-  const form = useForm();
+type Props = {
+  setFunnelList: React.Dispatch<React.SetStateAction<FunnelData[]>>;
+  funnelList: FunnelData[];
+};
+
+const formSchema = z.object({
+  name: z.string().min(1, {
+    message: "Funnel name must be at least 1 character",
+  }),
+});
+
+const CreateFunnel = (props: Props) => {
+  const { setFunnelList, funnelList } = props;
+  const { setClose } = useModal();
+  const { toast } = useToast();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    console.log(values);
+    const modifiedFunnelList = [
+      ...funnelList,
+      { name: values.name, updatedAt: "Today", published: "Live" },
+    ];
+    setFunnelList(modifiedFunnelList);
+    toast({
+      title: "Success",
+      description: "New funnel is added",
+    });
+    setClose();
+  };
 
   return (
     <Card className="flex-1">
@@ -36,7 +64,10 @@ const CreateFunnel = () => {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form className="flex flex-col gap-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
+          >
             <FormField
               control={form.control}
               name="name"
