@@ -1,7 +1,7 @@
 "use client";
 import { MoveLeft } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Editor } from "@tinymce/tinymce-react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -17,15 +17,40 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { SubmitHandler } from "react-hook-form";
+
+type ProductData = {
+  name: string;
+};
+interface FieldValues {
+  name: string;
+}
 
 const CreateProductForm = () => {
   const form = useForm();
-  // const editorRef = useRef(null);
-  // const log = () => {
-  //   if (editorRef.current) {
-  //     console.log(editorRef.current.getContent());
-  //   }
-  // };
+
+  const router = useRouter();
+  const [productList, setProductList] = useState<ProductData[]>([]);
+
+  useEffect(() => {
+    const storedItem = localStorage.getItem("productList");
+    const storedProductList = storedItem ? JSON.parse(storedItem) : [];
+    setProductList(storedProductList);
+  }, []);
+
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get("name") as string;
+
+    const newProductList: ProductData[] = [...productList, { name }];
+
+    setProductList(newProductList);
+    localStorage.setItem("productList", JSON.stringify(newProductList));
+    router.push("/products");
+  };
 
   return (
     <div>
@@ -37,7 +62,7 @@ const CreateProductForm = () => {
             Include in Online store
           </div>
           <Form {...form}>
-            <form className="flex flex-col gap-10">
+            <form onSubmit={onSubmit} className="flex flex-col gap-10">
               {/* Products Information */}
               <FormField
                 control={form.control}
@@ -167,9 +192,7 @@ const CreateProductForm = () => {
               {/* Checkbox */}
               <div className="flex items-center space-x-2">
                 <Checkbox id="terms2" />
-                <label className="text-sm font-medium">
-                  Track Inventory
-                </label>
+                <label className="text-sm font-medium">Track Inventory</label>
               </div>
               <Button className="w-20 mt-4" type="submit">
                 {form.formState.isSubmitting ? "Loading" : "Create"}
@@ -178,8 +201,6 @@ const CreateProductForm = () => {
           </Form>
         </div>
       </div>
-
-      <div></div>
     </div>
   );
 };

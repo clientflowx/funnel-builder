@@ -24,7 +24,7 @@ import { Download, EllipsisVertical, Plus, Search } from "lucide-react";
 import { ProductsListingColumn } from "./columns";
 import { ProductData } from "./page";
 import Link from "next/link";
-import { useCSVReader } from "react-papaparse";
+import CsvReader from "./csv-reader";
 
 interface Props {
   columns: ProductsListingColumn[];
@@ -39,22 +39,12 @@ const ProductsTable: React.FC<Props> = ({
   filterValue,
   setProducts,
 }) => {
-  const { CSVReader } = useCSVReader();
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
   });
-
-  const handleCSVFileUpload = (results: any) => {
-    // Convert the uploaded array of arrays data into an array of objects
-    const parsedData = results.data.map((row: string[]) => ({
-      name: row[0],
-      updatedAt: row[1],
-    }));
-    setProducts(parsedData);
-  };
 
   return (
     <>
@@ -67,40 +57,13 @@ const ProductsTable: React.FC<Props> = ({
         </div>
         <div className="flex items-center justify-between gap-3">
           {/* Import as CSV button */}
-          <div>
-            <CSVReader onUploadAccepted={handleCSVFileUpload}>
-              {({ getRootProps, acceptedFile, getRemoveFileProps }: any) => (
-                <div className="flex">
-                  <div className="flex items-center gap-1">
-                    <Button
-                      variant="outline"
-                      className="flex items-center gap-1"
-                      type="button"
-                      {...getRootProps()}
-                    >
-                      <Download size={18} />
-                      <span> Import as CSV</span>
-                    </Button>
-                    <div className="text-xs font-semibold">
-                      {acceptedFile && acceptedFile.name}
-                    </div>
-                    {acceptedFile && (
-                      <button
-                        {...getRemoveFileProps()}
-                        className={` font-semibold text-xs text-red-400`}
-                      >
-                        Remove
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
-            </CSVReader>
-          </div>
+          <CsvReader setProducts={setProducts} />
+          {/* import from stripe */}
           <Button variant="outline" className="flex items-center gap-1">
             <Download size={18} />
             <span> Import from Stripe</span>
           </Button>
+          {/* create product */}
           <Link href="/products/create">
             <Button className="flex items-center gap-1">
               <Plus size={15} />

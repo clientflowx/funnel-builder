@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import FunnelsTable from "./data-table";
 import { Plus } from "lucide-react";
 import { columns } from "./columns";
@@ -11,8 +12,8 @@ export type FunnelData = {
   published: string;
 };
 
-const Funnels = async ({ params }: { params: { subaccountId: string } }) => {
-  const funnels: FunnelData[] = [
+const Funnels = ({ params }: { params: { subaccountId: string } }) => {
+  const initialFunnels: FunnelData[] = [
     {
       name: "Caching Kit",
       updatedAt: "Today",
@@ -35,6 +36,13 @@ const Funnels = async ({ params }: { params: { subaccountId: string } }) => {
     },
   ];
 
+  const [funnelData, setFunnelData] = useState<FunnelData[]>(initialFunnels);
+  const handleCreateFunnel = (newFunnel: { name: string }) => {
+    setFunnelData([
+      ...funnelData,
+      { name: newFunnel.name, updatedAt: "Today", published: "Live" },
+    ]);
+  };
   return (
     <BlurPage>
       <FunnelsTable
@@ -44,10 +52,10 @@ const Funnels = async ({ params }: { params: { subaccountId: string } }) => {
             New Funnel
           </>
         }
-        modalChildren={<CreateFunnel />}
+        modalChildren={<CreateFunnel onFunnelCreated={handleCreateFunnel} />}
         filterValue="name"
         columns={columns}
-        data={funnels}
+        data={funnelData}
       />
     </BlurPage>
   );

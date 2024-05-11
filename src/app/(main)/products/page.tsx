@@ -1,10 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductsTable from "./data-table";
 import { Plus } from "lucide-react";
 import { columns } from "./columns";
 import BlurPage from "@/components/global/blur-page";
-// import CreateProduct from "@/components/forms/products/create-product";
 
 export type ProductData = {
   name: string;
@@ -27,11 +26,29 @@ const Products = () => {
     },
     {
       name: "Viral marketing bundle",
-      updatedAt: "Todaxxy",
+      updatedAt: "Today",
     },
   ];
 
   const [products, setProducts] = useState<ProductData[]>(initialProducts);
+
+  useEffect(() => {
+    const loadProductsFromLocalStorage = () => {
+      const productList = localStorage.getItem("productList");
+      if (productList) {
+        const parsedProductList = JSON.parse(productList);
+        const NewProductsList = parsedProductList.map(
+          (product: { name: string }) => ({
+            name: product.name,
+            updatedAt: "today",
+          })
+        );
+        setProducts((prevProducts) => [...prevProducts, ...NewProductsList]);
+      }
+    };
+    loadProductsFromLocalStorage();
+  }, []);
+
   return (
     <BlurPage>
       <ProductsTable

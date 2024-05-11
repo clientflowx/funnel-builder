@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import {
   Form,
@@ -23,20 +23,40 @@ import { toast } from "../../ui/use-toast";
 import { useModal } from "@/providers/modal-provider";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler } from "react-hook-form";
+
+type FunnelData = {
+  name: string;
+};
+interface FieldValues {
+  name: string;
+}
 
 //CHALLENGE: Use favicons
 
-const CreateFunnel = () => {
+const CreateFunnel = ({
+  onFunnelCreated,
+}: {
+  onFunnelCreated: (newFunnel: FunnelData) => void;
+}) => {
   const form = useForm();
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get("name") as string;
+
+    const newFunnel: FunnelData = { name };
+    onFunnelCreated(newFunnel);
+  };
 
   return (
     <Card className="flex-1">
       <CardHeader>
-        <CardTitle>From blank</CardTitle>
+        <CardTitle>Create a New Funnel</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={onSubmit}>
             <FormField
               control={form.control}
               name="name"
