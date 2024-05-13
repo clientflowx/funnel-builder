@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../../ui/card";
+} from "../ui/card";
 import {
   Form,
   FormControl,
@@ -15,14 +15,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../ui/form";
+} from "../ui/form";
 import { useForm } from "react-hook-form";
 
-import { Input } from "../../ui/input";
+import { Input } from "../ui/input";
 
-import { Button } from "../../ui/button";
-import Loading from "../../global/loading";
-import { useToast } from "../../ui/use-toast";
+import { Button } from "../ui/button";
+import Loading from "../global/loading";
+import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 import { CopyPlusIcon, Trash } from "lucide-react";
 import { FunnelPage } from "@/types/funnel";

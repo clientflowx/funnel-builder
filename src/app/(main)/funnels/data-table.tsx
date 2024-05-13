@@ -67,7 +67,7 @@ const FunnelsTable: React.FC<Props> = ({
                 </CustomModal>
               );
             }
-          }} 
+          }}
           className="flex- gap-2"
         >
           {actionButtonText}

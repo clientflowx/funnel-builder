@@ -4,7 +4,7 @@ import FunnelsTable from "./data-table";
 import { Plus } from "lucide-react";
 import { columns } from "./columns";
 import BlurPage from "@/components/global/blur-page";
-import CreateFunnel from "@/components/forms/funnels/create-funnel";
+import CreateFunnel from "@/components/forms/create-funnel";
 
 export type FunnelData = {
   name: string;
@@ -38,13 +38,6 @@ const funnels: FunnelData[] = [
 const Funnels = ({ params }: { params: { subaccountId: string } }) => {
   const [funnelList, setFunnelList] = useState(funnels);
 
-  const [funnelData, setFunnelData] = useState<FunnelData[]>(initialFunnels);
-  const handleCreateFunnel = (newFunnel: { name: string }) => {
-    setFunnelData([
-      ...funnelData,
-      { name: newFunnel.name, updatedAt: "Today", published: "Live" },
-    ]);
-  };
   return (
     <BlurPage>
       <FunnelsTable
