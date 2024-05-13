@@ -27,7 +27,7 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({
 }) => {
   const showSidebarAndNavbar = useShouldShowSidebarAndNavbar();
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const setOpen = () => {
     setIsSidebarOpen(true);

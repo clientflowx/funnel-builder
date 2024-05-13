@@ -1,5 +1,4 @@
 "use client";
-import CustomModal from "@/components/global/custom-modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,33 +9,35 @@ import {
   TableRow,
   Table,
 } from "@/components/ui/table";
-import { useModal } from "@/providers/modal-provider";
 import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Search } from "lucide-react";
-import React from "react";
-import { FunnelListingColumn } from "./columns";
-import { FunnelData } from "./page";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Download, EllipsisVertical, Plus, Search } from "lucide-react";
+import { ProductsListingColumn } from "./columns";
+import { ProductData } from "./page";
 import Link from "next/link";
+import CsvReader from "./csv-reader";
 
 interface Props {
-  actionButtonText: React.ReactNode;
-  modalChildren: React.ReactNode;
-  columns: FunnelListingColumn[];
-  data: FunnelData[];
+  columns: ProductsListingColumn[];
+  data: ProductData[];
   filterValue: string;
+  setProducts: React.Dispatch<React.SetStateAction<ProductData[]>>;
 }
 
-const FunnelsTable: React.FC<Props> = ({
-  actionButtonText,
-  modalChildren,
+const ProductsTable: React.FC<Props> = ({
   columns,
   data,
   filterValue,
+  setProducts,
 }) => {
   const table = useReactTable({
     data,
@@ -44,41 +45,39 @@ const FunnelsTable: React.FC<Props> = ({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
   });
-  const { setOpen } = useModal();
 
   return (
     <>
       <div className="flex items-center justify-between ">
         <div className="flex flex-col mb-4">
-          <p className="text-[36px]">Funnels</p>
+          <p className="text-[36px]">Products</p>
           <p className="text-sm">
-            Build funnels to generate leads, appointments and receive payments
+            Create and manage products for your business
           </p>
         </div>
-        <Button
-          onClick={() => {
-            if (modalChildren) {
-              setOpen(
-                <CustomModal
-                  title="Create A Funnel"
-                  subheading="Start creating a funnel"
-                >
-                  {modalChildren}
-                </CustomModal>
-              );
-            }
-          }} 
-          className="flex- gap-2"
-        >
-          {actionButtonText}
-        </Button>
+        <div className="flex items-center justify-between gap-3">
+          {/* Import as CSV button */}
+          <CsvReader setProducts={setProducts} />
+          {/* import from stripe */}
+          <Button variant="outline" className="flex items-center gap-1">
+            <Download size={18} />
+            <span> Import from Stripe</span>
+          </Button>
+          {/* create product */}
+          <Link href="/products/create">
+            <Button className="flex items-center gap-1">
+              <Plus size={15} />
+              Create Product
+            </Button>
+          </Link>
+        </div>
       </div>
       <div className="grid grid-cols-3">
         <div className="col-span-2"></div>
         <div className="flex items-center justify-end py-4 gap-2">
           <Search />
           <Input
-            placeholder="Search for funnels"
+            placeholder="Search for products"
             value={
               (table.getColumn(filterValue)?.getFilterValue() as string) ?? ""
             }
@@ -118,18 +117,27 @@ const FunnelsTable: React.FC<Props> = ({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      <Link
-                        key={cell.id}
-                        href={`/funnels/${row.id}/steps`}
-                        className="w-full block"
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </Link>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
                     </TableCell>
                   ))}
+                  <TableCell>
+                    <Popover>
+                      <PopoverTrigger>
+                        <EllipsisVertical />
+                      </PopoverTrigger>
+                      <PopoverContent className="bg-black w-32 text-white border border-gray-800 flex">
+                        <Link
+                          className="w-full"
+                          href={`products/${row.id}/edit`}
+                        >
+                          Edit
+                        </Link>
+                      </PopoverContent>
+                    </Popover>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
@@ -149,4 +157,4 @@ const FunnelsTable: React.FC<Props> = ({
   );
 };
 
-export default FunnelsTable;
+export default ProductsTable;
