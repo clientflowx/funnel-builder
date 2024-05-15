@@ -1,17 +1,14 @@
 "use client";
-
 import CustomModal from "@/components/global/custom-modal";
 import { AlertDialog } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/components/ui/use-toast";
 import { useModal } from "@/providers/modal-provider";
-import { Check, ExternalLink, LucideEdit } from "lucide-react";
-import React, { useId, useState } from "react";
-
+import { Check, ExternalLink, LucideEdit, Plus } from "lucide-react";
+import React, { useEffect, useId, useState } from "react";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import Link from "next/link";
-
 import {
   Card,
   CardDescription,
@@ -23,6 +20,9 @@ import CreateFunnelPage from "@/components/forms/funnel-page";
 import FunnelStepCard from "./funnel-step-card";
 import { v4 } from "uuid";
 import FunnelPagePlaceholder from "@/components/funnel-page-placeholder";
+import Navbar from "@/components/navbar-custom";
+import { navbarOptions } from "./navbar-options";
+import ProductsTable, { productData } from "./products-table";
 
 // Test Data
 const funnel: Funnel = {
@@ -49,15 +49,48 @@ const pages: FunnelPage[] = [
   },
 ];
 
+interface PageProducts {
+  [key: string]: productData[];
+}
+
 const FunnelSteps = () => {
   const funnelId = "0";
   const { toast } = useToast();
-  const [clickedPage, setClickedPage] = useState<FunnelPage | undefined>(
-    pages[0]
-  );
+  const [clickedPage, setClickedPage] = useState<FunnelPage>(pages[0]);
   const { setOpen } = useModal();
   const [pagesState, setPagesState] = useState(pages);
-  console.log(pagesState);
+  const [selectedOption, setSelectedOption] = useState<string>("overview");
+  const [pageProducts, setPageProducts] = useState<PageProducts>({});
+
+  //fetched all products from LS
+  useEffect(() => {
+    const storedProducts = localStorage.getItem("pageProducts");
+    if (storedProducts) {
+      setPageProducts(JSON.parse(storedProducts));
+    }
+  }, []);
+
+  //fetches and stores the products of the clicked page
+  useEffect(() => {
+    if (clickedPage) {
+      const storedProducts = localStorage.getItem("pageProducts");
+      if (storedProducts) {
+        const products = JSON.parse(storedProducts);
+        setPageProducts((prevPageProducts) => ({
+          ...prevPageProducts,
+          [clickedPage.id]: products[clickedPage.id] || [],
+        }));
+      }
+    }
+  }, [clickedPage]);
+
+  //updates products in LS
+  const handleProductChange = (products: productData[]) => {
+    const newPageProducts = { ...pageProducts, [clickedPage!.id]: products };
+    setPageProducts(newPageProducts);
+    localStorage.setItem("pageProducts", JSON.stringify(newPageProducts));
+  };
+
   const onDragEnd = (dropResult: DropResult) => {
     const { destination, source } = dropResult;
 
@@ -100,6 +133,7 @@ const FunnelSteps = () => {
     setClickedPage(orderModifiedList[0]);
     setPagesState(orderModifiedList);
   };
+
   return (
     <AlertDialog>
       <div className="flex border-[1px] lg:!flex-row flex-col w-full">
@@ -163,54 +197,70 @@ const FunnelSteps = () => {
             Create New Steps
           </Button>
         </aside>
+        {/* right section */}
         <aside className="flex-[0.7] bg-muted p-4 ">
-          {!!pages.length ? (
-            <Card className="h-full flex justify-between flex-col">
-              <CardHeader>
-                <p className="text-sm text-muted-foreground">Page name</p>
-                <CardTitle>{clickedPage?.name}</CardTitle>
-                <CardDescription className="flex flex-col gap-4">
-                  <div className="border-2 rounded-lg sm:w-80 w-full  overflow-clip">
-                    <Link
-                      href={`/funnels/${funnelId}/builder/${clickedPage?.id}`}
-                      className="relative group"
-                    >
-                      <div className="cursor-pointer group-hover:opacity-30 w-full">
-                        {/* Todo: div inside p, hydration error */}
-                        <FunnelPagePlaceholder />
-                      </div>
-                      <LucideEdit
-                        size={50}
-                        className="!text-muted-foreground absolute top-1/2 left-1/2 opacity-0 transofrm -translate-x-1/2 -translate-y-1/2 group-hover:opacity-100 transition-all duration-100"
-                      />
-                    </Link>
+          <div className="p-2">
+            <Navbar
+              options={navbarOptions}
+              setSelectedOption={setSelectedOption}
+            />
+          </div>
+          {selectedOption === "overview" ? (
+            !!pages.length ? (
+              <Card className="h-full flex justify-between flex-col">
+                <CardHeader>
+                  <p className="text-sm text-muted-foreground">Page name</p>
+                  <CardTitle>{clickedPage?.name}</CardTitle>
+                  <CardDescription className="flex flex-col gap-4">
+                    <div className="border-2 rounded-lg sm:w-80 w-full  overflow-clip">
+                      <Link
+                        href={`/funnels/${funnelId}/builder/${clickedPage?.id}`}
+                        className="relative group"
+                      >
+                        <div className="cursor-pointer group-hover:opacity-30 w-full">
+                          {/* Todo: div inside p, hydration error */}
+                          <FunnelPagePlaceholder />
+                        </div>
+                        <LucideEdit
+                          size={50}
+                          className="!text-muted-foreground absolute top-1/2 left-1/2 opacity-0 transofrm -translate-x-1/2 -translate-y-1/2 group-hover:opacity-100 transition-all duration-100"
+                        />
+                      </Link>
 
-                    <Link
-                      target="_blank"
-                      href={`${process.env.NEXT_PUBLIC_SCHEME}${funnel.subDomainName}.${process.env.NEXT_PUBLIC_DOMAIN}/${clickedPage?.pathName}`}
-                      className="group flex items-center justify-start p-2 gap-2 hover:text-primary transition-colors duration-200"
-                    >
-                      <ExternalLink size={15} />
-                      <div className="w-64 overflow-hidden overflow-ellipsis ">
-                        {process.env.NEXT_PUBLIC_SCHEME}
-                        {funnel.subDomainName}.{process.env.NEXT_PUBLIC_DOMAIN}/
-                        {clickedPage?.pathName}
-                      </div>
-                    </Link>
-                  </div>
-                </CardDescription>
-                <CreateFunnelPage
-                  defaultData={clickedPage}
-                  funnelId={funnelId}
-                  order={clickedPage?.order || 0}
-                  deleteStep={deleteStep}
-                />
-              </CardHeader>
-            </Card>
+                      <Link
+                        target="_blank"
+                        href={`${process.env.NEXT_PUBLIC_SCHEME}${funnel.subDomainName}.${process.env.NEXT_PUBLIC_DOMAIN}/${clickedPage?.pathName}`}
+                        className="group flex items-center justify-start p-2 gap-2 hover:text-primary transition-colors duration-200"
+                      >
+                        <ExternalLink size={15} />
+                        <div className="w-64 overflow-hidden overflow-ellipsis ">
+                          {process.env.NEXT_PUBLIC_SCHEME}
+                          {funnel.subDomainName}.
+                          {process.env.NEXT_PUBLIC_DOMAIN}/
+                          {clickedPage?.pathName}
+                        </div>
+                      </Link>
+                    </div>
+                  </CardDescription>
+                  <CreateFunnelPage
+                    defaultData={clickedPage}
+                    funnelId={funnelId}
+                    order={clickedPage?.order || 0}
+                    deleteStep={deleteStep}
+                  />
+                </CardHeader>
+              </Card>
+            ) : (
+              <div className="h-[600px] flex items-center justify-center text-muted-foreground">
+                Create a page to view page settings.
+              </div>
+            )
           ) : (
-            <div className="h-[600px] flex items-center justify-center text-muted-foreground">
-              Create a page to view page settings.
-            </div>
+            //Products Tab Table
+            <ProductsTable
+              currentPageProducts={pageProducts[clickedPage?.id] || []}
+              onProductsChange={handleProductChange}
+            />
           )}
         </aside>
       </div>
