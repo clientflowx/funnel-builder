@@ -16,6 +16,7 @@ export type EditorElement = {
     | {
         href?: string;
         innerText?: string;
+        src?: string;
       };
 };
 
