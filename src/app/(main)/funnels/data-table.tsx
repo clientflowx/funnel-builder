@@ -121,7 +121,7 @@ const FunnelsTable: React.FC<Props> = ({
                       <Link
                         key={cell.id}
                         href={`/funnels/${row.id}/steps`}
-                        className="w-full block"
+                        className="w-full block p-1"
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
@@ -146,7 +146,7 @@ const FunnelsTable: React.FC<Props> = ({
         </Table>
       </div>
     </>
-  );
+  ); 
 };
 
 export default FunnelsTable;
