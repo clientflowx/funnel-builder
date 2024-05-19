@@ -1,12 +1,8 @@
 "use client";
-import { MoveLeft } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Editor } from "@tinymce/tinymce-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useRef } from "react";
-
 import {
   Form,
   FormControl,
@@ -17,15 +13,39 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+
+type ProductData = {
+  name: string;
+};
+interface FieldValues {
+  name: string;
+}
 
 const CreateProductForm = () => {
   const form = useForm();
-  // const editorRef = useRef(null);
-  // const log = () => {
-  //   if (editorRef.current) {
-  //     console.log(editorRef.current.getContent());
-  //   }
-  // };
+
+  const router = useRouter();
+  const [productList, setProductList] = useState<ProductData[]>([]);
+
+  useEffect(() => {
+    const storedItem = localStorage.getItem("productList");
+    const storedProductList = storedItem ? JSON.parse(storedItem) : [];
+    setProductList(storedProductList);
+  }, []);
+
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get("name") as string;
+
+    const newProductList: ProductData[] = [...productList, { name }];
+
+    setProductList(newProductList);
+    localStorage.setItem("productList", JSON.stringify(newProductList));
+    router.push("/products");
+  };
 
   return (
     <div>
@@ -37,7 +57,7 @@ const CreateProductForm = () => {
             Include in Online store
           </div>
           <Form {...form}>
-            <form className="flex flex-col gap-10">
+            <form onSubmit={onSubmit} className="flex flex-col gap-10">
               {/* Products Information */}
               <FormField
                 control={form.control}
@@ -53,7 +73,7 @@ const CreateProductForm = () => {
               />
               <FormField
                 control={form.control}
-                name="name"
+                name="description"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Description</FormLabel>
@@ -92,6 +112,7 @@ const CreateProductForm = () => {
                           content_style:
                             "body {font-family: Helvetica, Arial, sans-serif;font-size: 14px;background-color: #000;color: #fff;}",
                         }}
+                        onEditorChange={(content) => field.onChange(content)}
                       />
                     </FormControl>
                     <h1 className="text-[6px] opacity-60">
@@ -104,7 +125,7 @@ const CreateProductForm = () => {
               />
               <FormField
                 control={form.control}
-                name="name"
+                name="collection"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Product Collection</FormLabel>
@@ -119,7 +140,7 @@ const CreateProductForm = () => {
               />
               {/* Checkbox */}
               <div className="flex items-center space-x-2">
-                <Checkbox id="terms2" />
+                <Checkbox id="chargeTax" />
                 <label className="text-sm font-medium">
                   Charge Tax on this product
                 </label>
@@ -129,19 +150,19 @@ const CreateProductForm = () => {
               <div className="flex items-center justify-between gap-4">
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="type"
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>Type</FormLabel>
                       <FormControl>
-                        <Input placeholder="" {...field} />
+                        <Input placeholder="Type" {...field} />
                       </FormControl>
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="amount"
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>Amount</FormLabel>
@@ -154,7 +175,7 @@ const CreateProductForm = () => {
               </div>
               <FormField
                 control={form.control}
-                name="name"
+                name="compareAtPrice"
                 render={({ field }) => (
                   <FormItem className="w-1/2">
                     <FormLabel>Compare-at price</FormLabel>
@@ -166,18 +187,16 @@ const CreateProductForm = () => {
               />
               {/* Checkbox */}
               <div className="flex items-center space-x-2">
-                <Checkbox id="terms2" />
+                <Checkbox id="trackInventory" />
                 <label className="text-sm font-medium">Track Inventory</label>
               </div>
               <Button className="w-20 mt-4" type="submit">
-                {form.formState.isSubmitting ? "Loading" : "Update"}
+                {form.formState.isSubmitting ? "Loading" : "Create"}
               </Button>
             </form>
           </Form>
         </div>
       </div>
-
-      <div></div>
     </div>
   );
 };

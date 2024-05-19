@@ -13,19 +13,19 @@ export type ProductData = {
 const Products = () => {
   const initialProducts: ProductData[] = [
     {
-      name: "Ultimate mindfullness bundle",
+      name: "Ultimate mindfulness bundle",
       updatedAt: "Today",
     },
     {
-      name: "Viral marketing bundle",
+      name: "Viral marketing bundle 01",
       updatedAt: "Today",
     },
     {
-      name: "Viral marketing bundle",
+      name: "Viral marketing bundle 02",
       updatedAt: "Today",
     },
     {
-      name: "Viral marketing bundle",
+      name: "Viral marketing bundle 03",
       updatedAt: "Today",
     },
   ];
@@ -37,17 +37,24 @@ const Products = () => {
       const productList = localStorage.getItem("productList");
       if (productList) {
         const parsedProductList = JSON.parse(productList);
-        const NewProductsList = parsedProductList.map(
-          (product: { name: string }) => ({
+        const newProductsList = parsedProductList.map(
+          (product: { name: string; updatedAt: string }) => ({
             name: product.name,
-            updatedAt: "today",
+            updatedAt: "Today",
           })
         );
-        setProducts((prevProducts) => [...prevProducts, ...NewProductsList]);
+        setProducts(newProductsList);
+      } else {
+        localStorage.setItem("productList", JSON.stringify(initialProducts));
+        setProducts(initialProducts);
       }
     };
     loadProductsFromLocalStorage();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("productList", JSON.stringify(products));
+  }, [products]);
 
   return (
     <BlurPage>
