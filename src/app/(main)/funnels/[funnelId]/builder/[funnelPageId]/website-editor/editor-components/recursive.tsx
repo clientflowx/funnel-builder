@@ -2,8 +2,8 @@ import { EditorElement } from "@/providers/editor/editor-provider";
 import React from "react";
 import TextComponent from "./text";
 import Container from "./container";
-import VideoComponent from "./video";
 import LinkComponent from "./link-component";
+import VideoComponent from "./video";
 
 type Props = {
   element: EditorElement;

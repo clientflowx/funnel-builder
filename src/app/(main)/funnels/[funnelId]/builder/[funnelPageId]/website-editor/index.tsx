@@ -21,17 +21,20 @@ const WebsiteEditor = ({ funnelPageId, liveMode }: Props) => {
     }
   }, [liveMode]);
 
-  //   useEffect(() => {
-  //       // Fetch funnelpage information
-
-  //     dispatch({
-  //       type: "LOAD_DATA",
-  //       payload: {
-  //         elements: response.content ? JSON.parse(response?.content) : "",
-  //         withLive: !!liveMode,
-  //       },
-  //     });
-  //   }, [funnelPageId]);
+  useEffect(() => {
+    const response = localStorage.getItem("editor-state");
+    if (!response) return;
+    const parsedData = JSON.parse(response);
+    console.log(parsedData);
+    // Fetch funnelpage information
+    dispatch({
+      type: "LOAD_DATA",
+      payload: {
+        elements: parsedData || "",
+        withLive: !!liveMode,
+      },
+    });
+  }, [funnelPageId]);
 
   const handleClick = () => {
     dispatch({ type: "CHANGE_CLICKED_ELEMENT", payload: {} });

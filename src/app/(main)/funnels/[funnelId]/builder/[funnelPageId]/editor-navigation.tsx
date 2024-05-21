@@ -9,6 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useToast } from "@/components/ui/use-toast";
 
 import { DeviceTypes, useEditor } from "@/providers/editor/editor-provider";
 import { FunnelPage } from "@/types/funnel";
@@ -24,7 +25,7 @@ import {
   Undo2,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
 import React, { useEffect } from "react";
 
 type Props = {
@@ -33,9 +34,8 @@ type Props = {
 };
 
 const EditorNavigation = ({ funnelId, pageDetails }: Props) => {
-  const router = useRouter();
   const { state, dispatch } = useEditor();
-
+  const { toast } = useToast();
   useEffect(() => {
     dispatch({
       type: "SET_FUNNELPAGE_ID",
@@ -54,6 +54,15 @@ const EditorNavigation = ({ funnelId, pageDetails }: Props) => {
 
   const handleRedo = () => {
     dispatch({ type: "REDO" });
+  };
+
+  const handleOnSave = () => {
+    console.log(state);
+    localStorage.setItem("editor-state", JSON.stringify(state.editor.elements));
+    toast({
+      title: "Success",
+      description: "Your changes were saved",
+    });
   };
 
   return (
@@ -173,7 +182,7 @@ const EditorNavigation = ({ funnelId, pageDetails }: Props) => {
               {/* Last updated {pageDetails.updatedAt.toLocaleDateString()} */}
             </span>
           </div>
-          {/* <Button onClick={handleOnSave}>Save</Button> */}
+          <Button onClick={handleOnSave}>Save</Button>
         </aside>
       </nav>
     </TooltipProvider>
