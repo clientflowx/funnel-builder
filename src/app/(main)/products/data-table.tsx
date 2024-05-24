@@ -58,11 +58,6 @@ const ProductsTable: React.FC<Props> = ({
         <div className="flex items-center justify-between gap-3">
           {/* Import as CSV button */}
           <CsvReader setProducts={setProducts} />
-          {/* import from stripe */}
-          <Button variant="outline" className="flex items-center gap-1">
-            <Download size={18} />
-            <span> Import from Stripe</span>
-          </Button>
           {/* create product */}
           <Link href="/products/create">
             <Button className="flex items-center gap-1">

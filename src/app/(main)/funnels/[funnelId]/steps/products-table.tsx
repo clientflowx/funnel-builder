@@ -41,7 +41,6 @@ export type productData = {
   productName: string;
   internalProductid: number;
   amount: number;
-  type: string;
   updatedAt: string;
 };
 export const columns: ProductsListingColumn[] = [
@@ -58,10 +57,6 @@ export const columns: ProductsListingColumn[] = [
     header: "Amount",
   },
   {
-    accessorKey: "type",
-    header: "Type",
-  },
-  {
     accessorKey: "updatedAt",
     header: "Last Updated",
   },
@@ -70,6 +65,25 @@ export const columns: ProductsListingColumn[] = [
 interface Props {
   currentPageProducts: productData[];
   onProductsChange: (product: productData[]) => void;
+}
+type ProductData = {
+  name: string;
+  description: string;
+  media: File | null;
+  chargeTax: boolean;
+  prices: PriceField[];
+};
+
+interface PriceAdditionOption {
+  description: string;
+  membershipOffer: boolean;
+}
+
+interface PriceField {
+  type: string;
+  amount: string;
+  compareAtPrice: string;
+  priceAdditionOptions: PriceAdditionOption;
 }
 
 //Product Table Component
@@ -86,9 +100,10 @@ const ProductsTable: React.FC<Props> = ({
     getFilteredRowModel: getFilteredRowModel(),
   });
   const [addProductModal, setAddProductModal] = useState(false);
-  const [productsSaved, setProductsSaved] = useState<{ name: string }[]>([]);
+  const [productsSaved, setProductsSaved] = useState<ProductData[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<string>("");
-
+  const [selectedProductPrices, setSelectedProductPrices] =
+    useState<string[]>();
   useEffect(() => {
     const productList = localStorage.getItem("productList");
     if (productList) {
@@ -106,7 +121,6 @@ const ProductsTable: React.FC<Props> = ({
         productName: selectedProduct,
         internalProductid: Math.floor(Math.random() * 1000),
         amount: parseFloat(data.amount) || 0,
-        type: data.type || "N/A",
         updatedAt: "Today",
       };
       const updatedProducts = [...tableProducts, newProduct];
@@ -116,6 +130,11 @@ const ProductsTable: React.FC<Props> = ({
     }
   };
 
+  const changeSelectedProductPrices = (value: string) => {
+    const product = productsSaved.find((product) => product.name === value);
+    const pricesArray = product?.prices.map((price) => price.amount);
+    setSelectedProductPrices(pricesArray);
+  };
   return (
     <div>
       <div className="flex flex-col gap-5">
@@ -149,7 +168,10 @@ const ProductsTable: React.FC<Props> = ({
                   <div>
                     <Label>Products*</Label>
                     <Select
-                      onValueChange={(value) => setSelectedProduct(value)}
+                      onValueChange={(value) => {
+                        setSelectedProduct(value);
+                        changeSelectedProductPrices(value);
+                      }}
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select a product" />
@@ -174,23 +196,29 @@ const ProductsTable: React.FC<Props> = ({
                     </Select>
                   </div>
                   <FormField
+                    control={form.control}
                     name="amount"
                     render={({ field }) => (
-                      <FormItem className="w-full">
+                      <FormItem className="w-full flex flex-col justify-between">
                         <FormLabel>Amount*</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter Amount" {...field} />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="type"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormLabel>Type</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter Type" {...field} />
+                          <select
+                            {...field}
+                            className="input p-2 border bg-black rounded-md outline-none"
+                          >
+                            <option value="" className="bg-black text-white">
+                              Select Price
+                            </option>
+                            {selectedProductPrices?.map((price, index) => (
+                              <option
+                                key={index}
+                                value={price}
+                                className="bg-black text-white"
+                              >
+                                {price}
+                              </option>
+                            ))}
+                          </select>
                         </FormControl>
                       </FormItem>
                     )}

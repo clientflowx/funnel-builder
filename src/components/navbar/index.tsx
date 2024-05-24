@@ -12,7 +12,7 @@ const Navbar = () => {
         <button onClick={toggleSidebar}>
           <Menu size={20} />
         </button>
-        <Link href="/">ClientFlowX</Link>
+        <Link href="/">Blumecart</Link>
       </div>
       {/* user popover component */}
       <PopOver />
