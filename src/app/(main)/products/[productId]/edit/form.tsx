@@ -72,6 +72,10 @@ const EditProductForm: React.FC<Props> = ({ productIndex }) => {
   }, [productIndex, form]);
 
   const onSubmit = (data: any) => {
+    if (!data.media) {
+      alert("Please upload an image.");
+      return;
+    }
     const newProduct: ProductData = {
       name: data.title,
       description: data.description,
