@@ -5,12 +5,13 @@ import { Plus } from "lucide-react";
 import { columns } from "./columns";
 import BlurPage from "@/components/global/blur-page";
 
-type ProductData = {
+export type ProductData = {
   name: string;
   description: string;
   media: File | null;
   chargeTax: boolean;
   prices: PriceField[];
+  updatedAt?: string;
 };
 
 interface PriceAdditionOption {
@@ -24,7 +25,6 @@ interface PriceField {
   priceAdditionOptions: PriceAdditionOption;
 }
 const Products = () => {
-
   const initialProducts: ProductData[] = [
     {
       name: "Ultimate mindfulness bundle",

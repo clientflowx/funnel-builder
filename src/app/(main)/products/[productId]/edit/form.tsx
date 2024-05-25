@@ -39,8 +39,37 @@ const EditProductForm: React.FC<Props> = ({ productIndex }) => {
     const storedItem = localStorage.getItem("productList");
     const storedProductList = storedItem ? JSON.parse(storedItem) : [];
     setProductList(storedProductList);
-    console.log("current product index to be edited: ", productIndex);
-  }, []);
+
+    if (storedProductList.length > 0 && productIndex >= 0) {
+      const product = storedProductList[productIndex];
+
+      form.reset({
+        title: product.name,
+        description: product.description,
+        chargeTax: product.chargeTax,
+        // media: product.media ? [product.media] : null,
+        media: null,
+        ...product.prices.reduce(
+          (
+            acc: { [key: string]: string | boolean | number },
+            price: PriceField,
+            index: number
+          ) => {
+            acc[`amount_${index}`] = price.amount;
+            acc[`compareAtPrice_${index}`] = price.compareAtPrice;
+            acc[`priceDescription_${index}`] =
+              price.priceAdditionOptions.description;
+            acc[`membershipOffer_${index}`] =
+              price.priceAdditionOptions.membershipOffer;
+            return acc;
+          },
+          {}
+        ),
+      });
+
+      setPriceFields(product.prices);
+    }
+  }, [productIndex, form]);
 
   const onSubmit = (data: any) => {
     const newProduct: ProductData = {
@@ -59,7 +88,8 @@ const EditProductForm: React.FC<Props> = ({ productIndex }) => {
     };
 
     // console.log("submitted product data: ", newProduct);
-    const newProductList: ProductData[] = [...productList, newProduct];
+    const newProductList: ProductData[] = [...productList];
+    newProductList[productIndex] = newProduct;
     setProductList(newProductList);
     localStorage.setItem("productList", JSON.stringify(newProductList));
     router.push("/products");
@@ -109,7 +139,9 @@ const EditProductForm: React.FC<Props> = ({ productIndex }) => {
                       <FormControl>
                         <Editor
                           apiKey="3nvpw45mb27i236oztduyp22d4ud67tqms706ubsjbspsvmv"
-                          initialValue="Write something..."
+                          initialValue={
+                            productList[productIndex]?.description || ""
+                          }
                           init={{
                             height: 500,
                             menubar: false,
