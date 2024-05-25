@@ -44,7 +44,16 @@ const CsvReader: React.FC<Props> = ({ setProducts }) => {
                   <button
                     className={` font-semibold text-xs text-red-400`}
                     onClick={() => {
-                      setProducts([{ name: "", updatedAt: "" }]);
+                      setProducts([
+                        {
+                          name: "",
+                          description: "",
+                          media: null,
+                          chargeTax: false,
+                          prices: [],
+                          updatedAt: "",
+                        },
+                      ]);
                       setShowRemoveButton(false);
                     }}
                   >
@@ -61,3 +70,4 @@ const CsvReader: React.FC<Props> = ({ setProducts }) => {
 };
 
 export default CsvReader;
+ 

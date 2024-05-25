@@ -49,20 +49,27 @@ const EditProductForm: React.FC<Props> = ({ productIndex }) => {
         chargeTax: product.chargeTax,
         // media: product.media ? [product.media] : null,
         media: null,
-        ...product.prices.reduce((acc, price, index) => {
-          acc[`amount_${index}`] = price.amount;
-          acc[`compareAtPrice_${index}`] = price.compareAtPrice;
-          acc[`priceDescription_${index}`] =
-            price.priceAdditionOptions.description;
-          acc[`membershipOffer_${index}`] =
-            price.priceAdditionOptions.membershipOffer;
-          return acc;
-        }, {}),
+        ...product.prices.reduce(
+          (
+            acc: { [key: string]: string | boolean | number },
+            price: PriceField,
+            index: number
+          ) => {
+            acc[`amount_${index}`] = price.amount;
+            acc[`compareAtPrice_${index}`] = price.compareAtPrice;
+            acc[`priceDescription_${index}`] =
+              price.priceAdditionOptions.description;
+            acc[`membershipOffer_${index}`] =
+              price.priceAdditionOptions.membershipOffer;
+            return acc;
+          },
+          {}
+        ),
       });
 
       setPriceFields(product.prices);
     }
-  }, [productIndex]);
+  }, [productIndex, form]);
 
   const onSubmit = (data: any) => {
     const newProduct: ProductData = {

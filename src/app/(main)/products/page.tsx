@@ -11,6 +11,7 @@ export type ProductData = {
   media: File | null;
   chargeTax: boolean;
   prices: PriceField[];
+  updatedAt?: string;
 };
 
 interface PriceAdditionOption {
@@ -24,7 +25,6 @@ interface PriceField {
   priceAdditionOptions: PriceAdditionOption;
 }
 const Products = () => {
-
   const initialProducts: ProductData[] = [
     {
       name: "Ultimate mindfulness bundle",

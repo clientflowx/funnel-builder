@@ -12,3 +12,4 @@ export const columns: ProductsListingColumn[] = [
     header: "Last Updated",
   },
 ];
+ 
