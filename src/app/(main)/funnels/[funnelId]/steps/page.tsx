@@ -23,6 +23,7 @@ import FunnelPagePlaceholder from "@/components/funnel-page-placeholder";
 import Navbar from "@/components/navbar-custom";
 import { navbarOptions } from "./navbar-options";
 import ProductsTable, { productData } from "./products-table";
+import Settings from "./(settings)/page";
 
 // Test Data
 const funnel: Funnel = {
@@ -199,7 +200,7 @@ const FunnelSteps = () => {
         </aside>
         {/* right section */}
         <aside className="flex-[0.7] bg-muted p-4 ">
-          <div className="p-2">
+          <div className="py-2">
             <Navbar
               options={navbarOptions}
               setSelectedOption={setSelectedOption}
@@ -255,12 +256,15 @@ const FunnelSteps = () => {
                 Create a page to view page settings.
               </div>
             )
-          ) : (
-            //Products Tab Table
+          ) : selectedOption === "products" ? (
             <ProductsTable
               currentPageProducts={pageProducts[clickedPage?.id] || []}
               onProductsChange={handleProductChange}
             />
+          ) : (
+            <div className="h-[600px] flex items-start justify-center text-muted-foreground">
+              <Settings /> 
+            </div>
           )}
         </aside>
       </div>

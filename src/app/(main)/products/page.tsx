@@ -5,7 +5,7 @@ import { Plus } from "lucide-react";
 import { columns } from "./columns";
 import BlurPage from "@/components/global/blur-page";
 
-type ProductData = {
+export type ProductData = {
   name: string;
   description: string;
   media: File | null;
