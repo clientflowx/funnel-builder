@@ -4,7 +4,9 @@ import Link from "next/link";
 import React from "react";
 import EditProductForm from "./form";
 
-const EditProduct = () => {
+const EditProduct = ({ params }: { params: { productId: number } }) => {
+  const currentIndex = params?.productId;
+
   return (
     <div className="flex flex-col gap-10">
       <div className="w-20 opacity-90 hover:opacity-100 transition-all">
@@ -15,7 +17,7 @@ const EditProduct = () => {
       </div>
 
       {/* Edit Product form */}
-      <EditProductForm />
+      <EditProductForm productIndex={currentIndex} />
     </div>
   );
 };
