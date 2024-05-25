@@ -25,6 +25,7 @@ export type Editor = {
   elements: EditorElement[];
   selectedElement: EditorElement;
   device: DeviceTypes;
+  draggedElement: EditorElement;
   previewMode: boolean;
   funnelPageId: string;
 };
@@ -56,6 +57,13 @@ const initialEditorState: EditorState["editor"] = {
     styles: {},
     type: null,
   },
+  draggedElement: {
+    content: [],
+    id: "",
+    name: "",
+    styles: {},
+    type: null,
+  },
   device: "Desktop",
   previewMode: false,
   liveMode: false,
@@ -80,10 +88,29 @@ const addElement = (
     throw new Error("Wrong action type passed in the function");
   return elementsArray.map((item) => {
     if (item.id === action.payload.containerId && Array.isArray(item.content)) {
-      return {
-        ...item,
-        content: [...item.content, action.payload.elementDetails],
-      };
+      if (
+        action.payload.index === undefined ||
+        action.payload.currentIndex === undefined
+      )
+        return {
+          ...item,
+          content: [...item.content, action.payload.elementDetails],
+        };
+      else {
+        let newIndex = action.payload.index;
+        if (item.content.length === newIndex) newIndex -= 1;
+        const modifiedItemContent = [...item.content];
+        const draggedItem = modifiedItemContent.splice(
+          action.payload.currentIndex,
+          1
+        )[0];
+        modifiedItemContent.splice(newIndex, 0, draggedItem);
+
+        return {
+          ...item,
+          content: [...modifiedItemContent],
+        };
+      }
     } else if (item.content && Array.isArray(item.content)) {
       return { ...item, content: addElement(item.content, action) };
     }
@@ -243,6 +270,15 @@ const editorReducer = (
         },
       };
       return clickedState;
+    case "SET_DRAGGED_ELEMENT":
+      return {
+        ...state,
+        editor: {
+          ...state.editor,
+          draggedElement: action.payload.draggedElement,
+        },
+      };
+
     case "CHANGE_DEVICE":
       const changedDeviceState = {
         ...state,

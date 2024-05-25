@@ -6,6 +6,8 @@ export type EditorAction =
       payload: {
         containerId: string;
         elementDetails: EditorElement;
+        index: number | undefined;
+        currentIndex: number | undefined;
       };
     }
   | {
@@ -18,6 +20,20 @@ export type EditorAction =
       type: "DELETE_ELEMENT";
       payload: {
         elementDetails: EditorElement;
+      };
+    }
+  | {
+      type: "SET_DRAGGED_ELEMENT";
+      payload: {
+        draggedElement: EditorElement;
+      };
+    }
+  | {
+      type: "MOVE_ELEMENT";
+      payload: {
+        sourceId: string;
+        destinationId: string;
+        containerId: string;
       };
     }
   | {

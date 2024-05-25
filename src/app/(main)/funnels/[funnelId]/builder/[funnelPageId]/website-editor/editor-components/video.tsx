@@ -51,6 +51,7 @@ const VideoComponent = (props: Props) => {
           "border-dashed border-[1px] border-slate-300": !state.editor.liveMode,
         }
       )}
+      data-id={props.element.id}
     >
       {state.editor.selectedElement.id === props.element.id &&
         !state.editor.liveMode && (

@@ -5,7 +5,7 @@ import React from "react";
 type Props = {};
 
 const TextPlaceholder = (props: Props) => {
-  const handleDragState = (e: React.DragEvent, type: EditorBtns) => {
+  const handleDragState = (e: React.DragEvent, type: string) => {
     if (type === null) return;
     e.dataTransfer.setData("componentType", type);
   };
@@ -14,7 +14,7 @@ const TextPlaceholder = (props: Props) => {
     <div
       draggable
       onDragStart={(e) => {
-        handleDragState(e, "text");
+        handleDragState(e, "add-text");
       }}
       className=" h-14 w-14 bg-muted rounded-lg flex items-center justify-center"
     >

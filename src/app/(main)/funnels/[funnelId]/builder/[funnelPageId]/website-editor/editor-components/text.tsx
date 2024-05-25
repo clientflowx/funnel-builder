@@ -30,6 +30,11 @@ const TextComponent = (props: Props) => {
     });
   };
 
+  const handleDragStart = (e: React.DragEvent, type: string) => {
+    if (type === "__body") return;
+    e.dataTransfer.setData("componentType", type);
+  };
+
   //WE ARE NOT ADDING DRAG DROP
   return (
     <div
@@ -46,6 +51,7 @@ const TextComponent = (props: Props) => {
         }
       )}
       onClick={handleOnClickBody}
+      data-id={props.element.id}
     >
       {state.editor.selectedElement.id === props.element.id &&
         !state.editor.liveMode && (
